@@ -2,8 +2,6 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Domain\Auth\Role;
-use App\Infrastructure\Persistence\Eloquent\Models\Tenant;
 use App\Infrastructure\Persistence\Eloquent\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -15,14 +13,11 @@ class LoginTest extends TestCase
 
     public function test_user_can_login_and_receive_token(): void
     {
-        $tenant = Tenant::query()->create(['name' => 'Clínica Demo']);
-
         User::query()->create([
-            'tenant_id' => $tenant->id,
             'name' => 'Admin',
             'email' => 'admin@demo.test',
             'password' => Hash::make('password'),
-            'role' => Role::TENANT_ADMIN->value,
+            'role' => \App\Domain\Auth\Role::ADMIN->value,
         ]);
 
         $response = $this->postJson('/api/v1/login', [
@@ -34,7 +29,7 @@ class LoginTest extends TestCase
         $response->assertOk();
         $response->assertJsonStructure([
             'token',
-            'user' => ['id', 'tenant_id', 'name', 'email', 'role'],
+            'user' => ['id', 'name', 'email', 'role'],
         ]);
         $this->assertIsString($response->json('token'));
         $this->assertNotEmpty($response->json('token'));

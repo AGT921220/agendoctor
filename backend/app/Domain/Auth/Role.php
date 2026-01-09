@@ -4,9 +4,8 @@ namespace App\Domain\Auth;
 
 enum Role: string
 {
-    case TENANT_ADMIN = 'TENANT_ADMIN';
-    case DOCTOR = 'DOCTOR';
+    case ADMIN = 'ADMIN';
     case RECEPTIONIST = 'RECEPTIONIST';
-    case PATIENT_PORTAL = 'PATIENT_PORTAL';
+    case PATIENT = 'PATIENT';
 }
 

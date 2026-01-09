@@ -12,7 +12,6 @@ final readonly class UserAuthRecord
 {
     public function __construct(
         public int $id,
-        public int $tenantId,
         public string $name,
         public string $email,
         public Role $role,

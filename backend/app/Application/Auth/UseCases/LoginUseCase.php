@@ -34,7 +34,6 @@ final readonly class LoginUseCase
             'token' => $token,
             'user' => new User(
                 id: $record->id,
-                tenantId: $record->tenantId,
                 name: $record->name,
                 email: $record->email,
                 role: $record->role,

@@ -23,7 +23,6 @@ final class AuthController extends Controller
             'token' => $data['token'],
             'user' => [
                 'id' => $data['user']->id,
-                'tenant_id' => $data['user']->tenantId,
                 'name' => $data['user']->name,
                 'email' => $data['user']->email,
                 'role' => $data['user']->role->value,
@@ -47,7 +46,6 @@ final class AuthController extends Controller
         return response()->json([
             'user' => [
                 'id' => $user->id,
-                'tenant_id' => $user->tenantId,
                 'name' => $user->name,
                 'email' => $user->email,
                 'role' => $user->role->value,

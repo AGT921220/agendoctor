@@ -10,7 +10,6 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use App\Application\Auth\Exceptions\InvalidCredentialsException;
-use App\Infrastructure\Http\Middleware\ResolveTenantFromAuthenticatedUser;
 use App\Infrastructure\Http\Middleware\TraceIdMiddleware;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
@@ -29,10 +28,6 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Trace ID for all requests (incluye API).
         $middleware->append(TraceIdMiddleware::class);
-
-        $middleware->alias([
-            'tenant' => ResolveTenantFromAuthenticatedUser::class,
-        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (\Throwable $e, Request $request) {

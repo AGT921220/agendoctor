@@ -19,7 +19,6 @@ final class LaravelCurrentUserProvider implements CurrentUserProvider
 
         return new UserEntity(
             id: (int) $user->id,
-            tenantId: (int) $user->tenant_id,
             name: (string) $user->name,
             email: (string) $user->email,
             role: Role::from((string) $user->role),
