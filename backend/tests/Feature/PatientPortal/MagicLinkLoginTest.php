@@ -4,6 +4,7 @@ namespace Tests\Feature\PatientPortal;
 
 use App\Infrastructure\Persistence\Eloquent\Models\Patient;
 use App\Infrastructure\Persistence\Eloquent\Models\PatientAuth;
+use App\Infrastructure\Persistence\Eloquent\Models\Subscription;
 use DateTimeImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -16,6 +17,9 @@ class MagicLinkLoginTest extends TestCase
 
     public function test_magic_link_expires_and_is_not_reusable(): void
     {
+        // Para poder invitar, el sistema debe estar activo (no read-only).
+        Subscription::query()->create(['status' => 'active', 'plan_key' => 'BASIC']);
+
         $patient = Patient::factory()->create([
             'email' => 'patient@demo.test',
         ]);

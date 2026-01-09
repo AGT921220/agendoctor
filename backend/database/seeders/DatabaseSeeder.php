@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Domain\Auth\Role;
 use App\Infrastructure\Persistence\Eloquent\Models\User;
+use App\Infrastructure\Persistence\Eloquent\Models\Subscription;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -28,5 +29,8 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => Role::RECEPTIONIST->value,
         ]);
+
+        // Suscripción singleton (por defecto sin activar).
+        Subscription::query()->firstOrCreate([]);
     }
 }

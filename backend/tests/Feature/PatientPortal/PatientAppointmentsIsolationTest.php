@@ -6,6 +6,7 @@ use App\Domain\Appointment\AppointmentStatus;
 use App\Infrastructure\Persistence\Eloquent\Models\Appointment;
 use App\Infrastructure\Persistence\Eloquent\Models\Patient;
 use App\Infrastructure\Persistence\Eloquent\Models\PatientAuth;
+use App\Infrastructure\Persistence\Eloquent\Models\Subscription;
 use App\Infrastructure\Persistence\Eloquent\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -17,6 +18,9 @@ class PatientAppointmentsIsolationTest extends TestCase
 
     public function test_patient_can_only_see_their_appointments(): void
     {
+        // Para poder invitar, el sistema debe estar activo (no read-only).
+        Subscription::query()->create(['status' => 'active', 'plan_key' => 'BASIC']);
+
         $patientA = Patient::factory()->create(['email' => 'a@demo.test']);
         $patientB = Patient::factory()->create(['email' => 'b@demo.test']);
 

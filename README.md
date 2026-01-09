@@ -14,12 +14,41 @@ Estructura:
   - `POST /api/v1/login`
   - `POST /api/v1/logout` (auth)
   - `GET /api/v1/me` (auth)
-- Tenant actual:
-  - `GET /api/v1/tenant` (auth)
 - Carpetas de arquitectura hexagonal preparadas:
   - `app/Domain`
   - `app/Application`
   - `app/Infrastructure`
+
+## Billing (Stripe)
+
+Endpoints:
+
+- `POST /api/v1/billing/checkout` (auth) → crea Checkout Session para suscripción
+- `POST /api/v1/billing/portal` (auth) → Billing Portal (opcional)
+- `POST /api/v1/billing/webhook` → Webhooks Stripe
+
+Variables `.env` (backend):
+
+- `STRIPE_SECRET`
+- `STRIPE_WEBHOOK_SECRET`
+- `STRIPE_PRICE_IDS` (JSON: `{"BASIC":"price_...","PRO":"price_..."}`)
+- `FRONTEND_URL` (para success/cancel/return URLs)
+
+Stripe CLI (test mode):
+
+```bash
+stripe login
+stripe listen --forward-to http://localhost:8080/api/v1/billing/webhook
+```
+
+En otra terminal, disparar eventos de prueba:
+
+```bash
+stripe trigger checkout.session.completed
+stripe trigger customer.subscription.updated
+stripe trigger customer.subscription.deleted
+stripe trigger invoice.payment_failed
+```
 
 ## Levantar con Docker (backend + DB + nginx)
 
