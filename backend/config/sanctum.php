@@ -34,7 +34,9 @@ return [
     |
     */
 
-    'guard' => ['web'],
+    // Para este backend usamos Bearer tokens (no cookies SPA),
+    // así que evitamos chequear guards de sesión.
+    'guard' => [],
 
     /*
     |--------------------------------------------------------------------------

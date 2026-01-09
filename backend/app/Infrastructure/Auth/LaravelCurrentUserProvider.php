@@ -11,7 +11,7 @@ final class LaravelCurrentUserProvider implements CurrentUserProvider
 {
     public function user(): ?UserEntity
     {
-        $user = Auth::user();
+        $user = Auth::guard('sanctum')->user() ?? Auth::user();
 
         if (! $user) {
             return null;

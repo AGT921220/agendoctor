@@ -6,9 +6,17 @@ use App\Domain\Auth\Ports\CurrentUserProvider;
 use App\Domain\Auth\Ports\PasswordHasher;
 use App\Domain\Auth\Ports\TokenService;
 use App\Domain\Auth\Ports\UserRepository;
+use App\Domain\Appointment\Ports\AppointmentRepository;
+use App\Domain\Patient\Ports\PatientRepository;
+use App\Domain\PatientPortal\Ports\PatientAuthRepository;
+use App\Domain\Practice\Ports\PracticeSettingsRepository;
 use App\Infrastructure\Auth\LaravelCurrentUserProvider;
 use App\Infrastructure\Auth\LaravelPasswordHasher;
 use App\Infrastructure\Auth\LaravelTokenService;
+use App\Infrastructure\Persistence\Eloquent\Repositories\EloquentAppointmentRepository;
+use App\Infrastructure\Persistence\Eloquent\Repositories\EloquentPatientAuthRepository;
+use App\Infrastructure\Persistence\Eloquent\Repositories\EloquentPatientRepository;
+use App\Infrastructure\Persistence\Eloquent\Repositories\EloquentPracticeSettingsRepository;
 use App\Infrastructure\Persistence\Eloquent\Repositories\EloquentUserRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,6 +32,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PasswordHasher::class, LaravelPasswordHasher::class);
         $this->app->bind(TokenService::class, LaravelTokenService::class);
         $this->app->bind(CurrentUserProvider::class, LaravelCurrentUserProvider::class);
+
+        $this->app->bind(PracticeSettingsRepository::class, EloquentPracticeSettingsRepository::class);
+        $this->app->bind(AppointmentRepository::class, EloquentAppointmentRepository::class);
+        $this->app->bind(PatientRepository::class, EloquentPatientRepository::class);
+        $this->app->bind(PatientAuthRepository::class, EloquentPatientAuthRepository::class);
     }
 
     /**

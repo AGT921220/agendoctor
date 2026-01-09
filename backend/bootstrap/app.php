@@ -10,8 +10,8 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use App\Application\Auth\Exceptions\InvalidCredentialsException;
+use App\Infrastructure\Http\Middleware\ResetAuthGuardsMiddleware;
 use App\Infrastructure\Http\Middleware\TraceIdMiddleware;
-use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -21,10 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Sanctum (SPA auth via cookies) support on API routes.
-        $middleware->api(prepend: [
-            EnsureFrontendRequestsAreStateful::class,
-        ]);
+        $middleware->prepend(ResetAuthGuardsMiddleware::class);
 
         // Trace ID for all requests (incluye API).
         $middleware->append(TraceIdMiddleware::class);

@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\AgendaController;
+use App\Http\Controllers\Api\V1\PatientInviteController;
+use App\Http\Controllers\Api\V1\PatientPortalAppointmentsController;
+use App\Http\Controllers\Api\V1\PatientPortalAuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -13,10 +17,18 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/agenda/available-slots', [AgendaController::class, 'availableSlots']);
+    Route::post('/patient/magic-link-login', [PatientPortalAuthController::class, 'magicLinkLogin']);
 
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('/me', [AuthController::class, 'me']);
+
+        Route::post('/patients/{patientId}/invite', [PatientInviteController::class, 'invite']);
+
+        Route::get('/patient/appointments', [PatientPortalAppointmentsController::class, 'index']);
+        Route::post('/patient/appointments/{appointmentId}/confirm', [PatientPortalAppointmentsController::class, 'confirm']);
+        Route::post('/patient/appointments/{appointmentId}/cancel', [PatientPortalAppointmentsController::class, 'cancel']);
     });
 });
 
