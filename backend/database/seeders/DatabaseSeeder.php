@@ -2,9 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Domain\Auth\Role;
+use App\Infrastructure\Persistence\Eloquent\Models\Tenant;
+use App\Infrastructure\Persistence\Eloquent\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +16,32 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $tenant = Tenant::query()->create([
+            'name' => 'Clínica Demo',
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        User::query()->create([
+            'tenant_id' => $tenant->id,
+            'name' => 'Admin',
+            'email' => 'admin@demo.test',
+            'password' => Hash::make('password'),
+            'role' => Role::TENANT_ADMIN->value,
+        ]);
+
+        User::query()->create([
+            'tenant_id' => $tenant->id,
+            'name' => 'Doctor',
+            'email' => 'doctor@demo.test',
+            'password' => Hash::make('password'),
+            'role' => Role::DOCTOR->value,
+        ]);
+
+        User::query()->create([
+            'tenant_id' => $tenant->id,
+            'name' => 'Recepción',
+            'email' => 'reception@demo.test',
+            'password' => Hash::make('password'),
+            'role' => Role::RECEPTIONIST->value,
         ]);
     }
 }
