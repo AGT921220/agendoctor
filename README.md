@@ -79,14 +79,19 @@ docker compose up -d --build
 4) Verificar salud:
 
 ```bash
-curl -s http://localhost:8080/api/v1/health
+curl -s http://localhost:${APP_PORT:-8080}/api/v1/health
 ```
+
+(El puerto depende de `APP_PORT` en tu `.env` de la raíz, por defecto 8080)
 
 Opcional (si vas a usar DB con Laravel):
 
 ```bash
-docker compose exec php php artisan migrate
-docker compose exec php php artisan db:seed
+# Desde backend/
+make migrate
+# O directamente:
+docker compose exec php-agendoctor php artisan migrate
+docker compose exec php-agendoctor php artisan db:seed
 ```
 
 Seeder por defecto (local):
@@ -103,10 +108,26 @@ Requisitos:
 
 Pasos:
 
+1) Configurar URL del backend:
+
 ```bash
 cd frontend
+cp .env.example .env
+```
+
+Edita `frontend/.env` y configura la URL del backend:
+
+```env
+VITE_API_URL=http://localhost:8089
+```
+
+(El puerto debe coincidir con el que uses en `docker-compose.yml` o el `.env` de la raíz del proyecto)
+
+2) Instalar dependencias y ejecutar:
+
+```bash
 npm install
 npm run dev
 ```
 
-Por defecto Vite corre en `http://localhost:5173` y tiene proxy para `/api` apuntando a `http://localhost:8080`.
+Por defecto Vite corre en `http://localhost:5173` y se conecta al backend usando `VITE_API_URL` del `.env`.

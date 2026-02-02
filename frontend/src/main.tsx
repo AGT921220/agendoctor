@@ -8,15 +8,18 @@ import { queryClient } from './lib/queryClient'
 import { router } from './routes'
 import { ReadOnlyProvider } from './lib/readOnly'
 import { ReadOnlyBridgeSync } from './components/ReadOnlyBridgeSync'
+import { ErrorBoundary } from './components/ErrorBoundary'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <ReadOnlyProvider>
-        <ReadOnlyBridgeSync />
-        <RouterProvider router={router} />
-        <Toaster position="top-right" />
-      </ReadOnlyProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <ReadOnlyProvider>
+          <ReadOnlyBridgeSync />
+          <RouterProvider router={router} />
+          <Toaster position="top-right" />
+        </ReadOnlyProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   </StrictMode>,
 )

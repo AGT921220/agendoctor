@@ -1,10 +1,12 @@
+import type { ReactNode } from 'react'
+
 export function Card({
   title,
   children,
   className = '',
 }: {
   title?: string
-  children: React.ReactNode
+  children: ReactNode
   className?: string
 }) {
   return (
